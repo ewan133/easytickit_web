@@ -1,0 +1,91 @@
+.navbar {
+    background-color: #004d4d;
+}
+
+.navbar-brand img {
+    width: 50px;
+}
+
+.search-bar {
+    flex-grow: 1;
+    margin-left: 20px;
+}
+
+.nav-profile {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+
+/* Profile Card */
+.profile-card {
+    max-width: 800px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Profile Picture */
+.profile-img-container {
+    position: relative;
+    display: inline-block;
+}
+
+.profile-img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid #004E51;
+}
+
+/* Edit Button */
+.edit-btn {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    background: white;
+    border: none;
+    border-radius: 50%;
+    padding: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Input Fields */
+.form-control {
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    padding: 8px;
+    font-size: 14px;
+}
+
+.form-label {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+/* Buttons */
+.btn-warning {
+    background-color: #FF7F00;
+    border: none;
+    padding: 10px 20px;
+    font-weight: bold;
+    border-radius: 5px;
+}
+
+.btn-link {
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* Footer */
+.footer {
+    background-color: #f8f9fa;
+    text-align: center;
+    padding: 10px;
+    margin-top: 30px;
+}

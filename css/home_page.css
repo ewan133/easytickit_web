@@ -1,0 +1,64 @@
+.navbar {
+    background-color: #004d4d;
+    
+}
+.navbar-brand img {
+    width: 50px;
+}
+.search-bar {
+    flex-grow: 1;
+    margin-left: 20px;
+}
+.nav-profile {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+.footer {
+    background-color: #f8f9fa;
+    text-align: center;
+    padding: 10px;
+    margin-top: 30px;
+}
+.section-title {
+    text-align: center;
+    font-size: 2rem;
+    color: #004d4d;
+    font-weight: bold;
+    margin-top: 40px;
+}
+.carousel-indicators img{
+    width: 70px;
+    display: block;
+}
+.carousel-indicators button{
+    width: max-content!important;
+}
+.carousel {
+margin-bottom: 50px; /* Adds space below the carousel */
+}
+
+.carousel-indicators {
+position: absolute;
+bottom: -40px; /* Pushes indicators slightly lower */
+}
+
+.containerEvent {
+padding-top: 60px; /* Creates extra space between carousel and details */
+}
+
+.card {
+border: none; /* Removes border */
+border-radius: 10px;
+padding: 20px;
+color: black; /* Ensures text is readable */
+}
+.carousel-indicators button.active img{
+    border: 2px solid red;
+}
+.carousel-item img {
+display: block;
+margin: 0 auto;
+max-width: 100%; /* Ensures responsiveness */
+height: auto;
+}

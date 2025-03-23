@@ -1,5 +1,6 @@
 <?php
 require_once '../includes/data_getter.inc.php';
+
 ?>
 
 <!DOCTYPE html>
@@ -26,30 +27,35 @@ require_once '../includes/data_getter.inc.php';
                     <li class="nav-item"><a class="nav-link text-white" href="../index.php">HOME</a></li>
                     <li class="nav-item"><a class="nav-link text-white active" href="#">EVENTS</a></li>
                     <li class="nav-item">
-                        <a href="account_page.php"><img src="<?= htmlspecialchars('../uploads/' . $_SESSION['user_img']) ?>"
-                                class="nav-profile" alt="Profile"></a>
+                        <a href="account_page.php">
+                            <img src="<?= htmlspecialchars('../uploads/' . ($_SESSION['user_img'] ?? 'default-profile.jpg')) ?>"
+                                class="nav-profile" alt="Profile">
+                        </a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <div class="container h-100">
-        <h2 class="section-title">UPCOMING EVENTS</h2>
+    <div class="container mt-4">
+        <h2 class="section-title mb-4">UPCOMING EVENTS</h2>
         <div class="row" id="events-container">
-            <?php if (isset($_SESSION['active_events']) && count($_SESSION['active_events']) > 0): ?>
+            <?php if (!empty($_SESSION['active_events'])): ?>
                 <?php foreach ($_SESSION['active_events'] as $event): ?>
-                    <div class="col-md-4">
-                        <div class="card">
+                    <div class="col-md-4 mb-4">
+                        <div class="card event-card" data-id="<?= $event['event_id'] ?>">
                             <img src="<?= htmlspecialchars('../uploads/events/' . $event['image_1']) ?>"
                                 class="card-img-top img-fluid" alt="<?= htmlspecialchars($event['title']) ?>">
-                            <div class="card-body">
-                                <h5 class="card-title"><?= htmlspecialchars($event['title']) ?></h5>
-                                <p class="card-text"><?= htmlspecialchars($event['description']) ?></p>
-                                <p><strong>Date:</strong> <?= date("F d, Y", strtotime($event['start_datetime'])) ?></p>
-                                <p><strong>Price:</strong> ₱<?= number_format($event['price'], 2) ?></p>
-                                <a href="#" class="btn btn-warning text-white">See More</a>
+                            <div class="card-body p-2">
+                                <h5 class="card-title text-start fw-bold"><?= htmlspecialchars($event['title']) ?></h5>
+
+                                <p class="text-start"><strong>Date:</strong>
+                                    <?= date("F d, Y", strtotime($event['start_datetime'])) ?></p>
+                                <p class="text-start"><strong>Price:</strong> ₱<?= number_format($event['price'], 2) ?></p>
+                                <a href="detailed_events.php?event_id=<?= $event['event_id'] ?>"
+                                    class="btn btn-warning text-white">See More</a>
                             </div>
+
                         </div>
                     </div>
                 <?php endforeach; ?>
@@ -59,12 +65,9 @@ require_once '../includes/data_getter.inc.php';
         </div>
     </div>
 
-
     <div class="footer text-center py-3 mt-4 bg-dark text-light">
         <small>Copyright © easyTickIT 2025. All rights reserved. Designed by Back(log) Burners.</small>
     </div>
-
-
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
@@ -74,6 +77,7 @@ require_once '../includes/data_getter.inc.php';
             const eventsContainer = document.getElementById("events-container");
             const eventCards = eventsContainer.querySelectorAll(".col-md-4");
 
+            // Search Functionality
             searchInput.addEventListener("input", function () {
                 const searchText = searchInput.value.toLowerCase();
 

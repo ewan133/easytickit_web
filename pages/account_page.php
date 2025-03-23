@@ -65,15 +65,80 @@ require_once '../includes/data_getter.inc.php';
 
                         <!-- Buttons -->
                         <div class="d-flex justify-content-end gap-2 mt-3">
-                            <button class="btn btn-dark">My Events</button>
                             <a href="account_edit.php" class="btn btn-outline-dark">Edit Details</a>
-                            <form action="../includes/logout.inc.php" method="post">
-                                <button type="submit" class="btn btn-danger">Log Out</button>
-                            </form>
+
+                            <!-- Button to Trigger Logout Modal -->
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                data-bs-target="#logoutModal">
+                                Log Out
+                            </button>
 
                         </div>
                     </div>
 
+                </div>
+            </div>
+        </div>
+
+        <!-- Logout Confirmation Modal -->
+        <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content p-4 text-center">
+                    <div class="modal-body">
+                        <h2 class="fw-bold text-danger">Are you sure you want to log out?</h2>
+                        <div class="d-flex justify-content-center gap-4 mt-5">
+                            <!-- Yes Button (Logs Out) -->
+                            <a href="../includes/logout.inc.php" class="btn btn-success btn-lg px-4">
+                                Yes
+                            </a>
+                            <!-- No Button (Closes Modal) -->
+                            <button type="button" class="btn btn-danger btn-lg px-4" data-bs-dismiss="modal">
+                                No
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container event-container">
+            <!-- Event Selection Tags -->
+            <div class="d-flex justify-content-center gap-3">
+                <span id="reservedTag" class="event-tag active-tag">Reserved Events</span>
+                <span id="attendedTag" class="event-tag">Attended Events</span>
+            </div>
+
+            <!-- Reserved Events Section (Default Visible) -->
+            <div id="reservedEvents" class="event-list">
+                <?php if (isset($_SESSION['reserved_events']) && count($_SESSION['reserved_events']) > 0): ?>
+                    <?php foreach ($_SESSION['reserved_events'] as $event): ?>
+                        <div>
+                            <a href="detailed_events.php?event_id=<?= $event['event_id'] ?>">
+                                <img src="<?= htmlspecialchars('../uploads/events/' . $event['image_1']) ?>" class="event-img"
+                                    alt="<?= htmlspecialchars($event['title']) ?>">
+                            </a>
+                            <p><?= htmlspecialchars($event['title']) ?></p>
+                        </div>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <p class="text-center">No reserved events yet.</p>
+                <?php endif; ?>
+            </div>
+
+
+            <!-- Attended Events Section (Initially Hidden) -->
+            <div id="attendedEvents" class="event-list d-none">
+                <div>
+                    <a href="#"><img src="../assets/event3.png" class="event-img"></a>
+                    <p>Battle of the Bands 2024</p>
+                </div>
+                <div>
+                    <a href="#"><img src="../assets/event2.png" class="event-img"></a>
+                    <p>Music Fest 2023</p>
+                </div>
+                <div>
+                    <a href="#"><img src="../assets/event1.png" class="event-img"></a>
+                    <p>Another Attended Event</p>
                 </div>
             </div>
         </div>
@@ -114,16 +179,17 @@ require_once '../includes/data_getter.inc.php';
 
         <!-- Success Modal -->
         <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content p-3 text-center">
+            <div class="modal-dialog modal-dialog-centered"> <!-- Added modal-dialog-centered -->
+                <div class="modal-content p-5 text-center">
                     <div class="modal-body">
-                        <h5 class="fw-bold text-success">Password Change Successful!</h5>
-                        <button type="button" class="btn btn-warning mt-3" data-bs-dismiss="modal">Return to
+                        <h4 class="fw-bold text-success">Password Change Successful!</h4>
+                        <button type="button" class="btn btn-warning mt-5" data-bs-dismiss="modal">Return to
                             Account</button>
                     </div>
                 </div>
             </div>
         </div>
+
 
         <!-- Footer -->
         <div class="text-center py-3 mt-4 bg-dark text-light">
@@ -132,6 +198,7 @@ require_once '../includes/data_getter.inc.php';
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 
     <script>
         document.getElementById("confirmChangeBtn").addEventListener("click", function () {
@@ -184,6 +251,44 @@ require_once '../includes/data_getter.inc.php';
 
     </script>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Select the tab elements
+            const reservedTag = document.getElementById("reservedTag");
+            const attendedTag = document.getElementById("attendedTag");
+
+            // Select the event lists
+            const reservedEvents = document.getElementById("reservedEvents");
+            const attendedEvents = document.getElementById("attendedEvents");
+
+            // Function to switch between tabs
+            function switchTab(activeTab) {
+                if (activeTab === "reserved") {
+                    reservedEvents.classList.remove("d-none");
+                    attendedEvents.classList.add("d-none");
+
+                    reservedTag.classList.add("active-tag");
+                    attendedTag.classList.remove("active-tag");
+                } else {
+                    attendedEvents.classList.remove("d-none");
+                    reservedEvents.classList.add("d-none");
+
+                    attendedTag.classList.add("active-tag");
+                    reservedTag.classList.remove("active-tag");
+                }
+            }
+
+            // Add event listeners to tabs
+            reservedTag.addEventListener("click", function () {
+                switchTab("reserved");
+            });
+
+            attendedTag.addEventListener("click", function () {
+                switchTab("attended");
+            });
+        });
+
+    </script>
 
 
 

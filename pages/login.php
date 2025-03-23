@@ -1,4 +1,8 @@
-<?php session_start(); ?>
+<?php
+
+require_once '../includes/data_getter.inc.php'; 
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 

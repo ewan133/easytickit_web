@@ -43,9 +43,7 @@ position: absolute;
 bottom: -40px; /* Pushes indicators slightly lower */
 }
 
-.containerEvent {
-padding-top: 60px; /* Creates extra space between carousel and details */
-}
+
 
 .card {
 border: none; /* Removes border */
@@ -61,4 +59,106 @@ display: block;
 margin: 0 auto;
 max-width: 100%; /* Ensures responsiveness */
 height: auto;
+}
+
+/* event page */
+.event-card {
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.event-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.event-card.selected {
+    border: 3px solid #ffc107; /* Bootstrap warning color */
+}
+
+.card-img-top {
+    height: 400px;
+    object-fit: cover;
+}
+
+.card-title {
+    text-align: center;
+    margin-top: 10px;
+}
+
+
+/* detailed event page */
+
+.event-details-container {
+    padding: 40px;
+    margin-top: 40px;
+    border-radius: 10px;
+    color: #ffffff; /* Ensures text is readable on dark/light backgrounds */
+    transition: background 0.5s ease-in-out;
+}
+
+.event-img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.event-title {
+    font-weight: 700;
+    font-size: 2.5rem;
+}
+
+.event-description {
+    font-size: 1.1rem;
+    margin-top: 20px;
+    line-height: 1.6;
+}
+
+.event-date-price {
+    margin-top: 20px;
+    font-style: italic;
+    font-size: 1.1rem;
+}
+
+.other-photos-section {
+    margin-top: 60px;
+    text-align: center;
+}
+
+.other-photos-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 30px;
+}
+
+.other-photos-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.other-photo {
+    border-radius: 10px;
+    width: 250px;
+    height: 250px;
+    object-fit: cover;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.other-photo:hover {
+    transform: scale(1.05);
+}
+
+.reserve-btn {
+    width: 30%;
+    font-size: 1.2rem;
+    padding: 10px;
+}
+
+@media (max-width: 768px) {
+    .other-photo {
+        width: 90%;
+        height: auto;
+    }
 }

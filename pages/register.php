@@ -31,7 +31,7 @@
                     <form action="../includes/register.inc.php" method="POST" enctype="multipart/form-data"
                         onsubmit="return validateForm()">
 
-                        <div class="text-center mb-3">
+                        <div class="text-center mb-3 d-none">
                             <?php
                             // Default profile image
                             $profileImage = "../uploads/default.jpg";
@@ -153,6 +153,7 @@
             }
         }
     </script>
+    
     <script>
         function validateYearSection(input) {
             let value = input.value.replace(/[^1-9-]/g, ''); // Allow only 1-6 and dash

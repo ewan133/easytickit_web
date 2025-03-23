@@ -23,6 +23,11 @@ $_SESSION['users_by_department'] = getUsersByDepartment($pdo);
 //Fetch all active events for events page
 $_SESSION['active_events'] = getAllActiveEvents($pdo);
 
+// Fetch user's reserved events (if logged in)
+if (isset($_SESSION['user_id'])) {
+    $_SESSION['reserved_events'] = getUserReservedEvents($pdo, $_SESSION['user_id']);
+}
+
 
 // Function to get all latest events
 function getAllLatestEvents($pdo)
@@ -89,5 +94,19 @@ function getAllActiveEvents($pdo)
     $sql = "SELECT * FROM Events WHERE status = 'active' ORDER BY created_at DESC";
     $stmt = $pdo->prepare($sql);
     $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+// Function to get all the events that user reserved
+function getUserReservedEvents($pdo, $userId)
+{
+    $sql = "SELECT e.event_id, e.title, e.image_1, e.start_datetime, e.price, r.status 
+            FROM Reservations r
+            INNER JOIN Events e ON r.event_id = e.event_id
+            WHERE r.user_id = ?
+            ORDER BY r.reserved_at DESC";
+    
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$userId]);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }

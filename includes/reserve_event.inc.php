@@ -1,5 +1,6 @@
 <?php
 require_once 'session_config.inc.php';
+require_once '../phpqrcode/qrlib.php';  // Include the PHP QR code library
 
 if ($_SERVER['REQUEST_METHOD'] === "GET") { // Using GET method for reservation
 
@@ -56,11 +57,32 @@ if ($_SERVER['REQUEST_METHOD'] === "GET") { // Using GET method for reservation
         $pdo->beginTransaction();
         $transactionStarted = true; // Set flag
 
-        // Insert reservation into Reservations table
-        $stmt = $pdo->prepare("INSERT INTO Reservations (user_id, event_id, status, payment_status) VALUES (?, ?, 'pending', 'pending')");
-        $stmt->execute([$userId, $eventId]);
+        // 1. Insert ticket into Tickets table (first)
+        $stmt = $pdo->prepare("INSERT INTO Tickets (event_id, user_id, qr_code, price, status) VALUES (?, ?, '', ?, 'valid')");
+        $stmt->execute([$eventId, $userId, $event['price']]);
 
-        // Update event's reserved count
+        // Get the ticket id (after the insert)
+        $ticketId = $pdo->lastInsertId(); // Get the ticket id after insertion
+        $qrCodeData = "ticket_id=$ticketId"; // QR data to be encoded
+        $qrCodePath = "../uploads/qr/$ticketId.png";  // Path to save the QR code image
+
+        // Ensure directory exists
+        if (!file_exists('../uploads/qr')) {
+            mkdir('../uploads/qr', 0777, true);  // Create folder if it doesn't exist
+        }
+
+        // 2. Generate the QR code and save it to the specified path
+        QRcode::png($qrCodeData, $qrCodePath, QR_ECLEVEL_L, 10); // Adjust size as needed
+
+        // 3. Update the QR code path in the Tickets table
+        $stmt = $pdo->prepare("UPDATE Tickets SET qr_code = ? WHERE ticket_id = ?");
+        $stmt->execute([$qrCodePath, $ticketId]);
+
+        // 4. Insert reservation into Reservations table (now that we have a valid ticket ID)
+        $stmt = $pdo->prepare("INSERT INTO Reservations (user_id, event_id, ticket_id, status, payment_status) VALUES (?, ?, ?, 'pending', 'pending')");
+        $stmt->execute([$userId, $eventId, $ticketId]);
+
+        // 5. Update event's reserved count
         $stmt = $pdo->prepare("UPDATE Events SET reserved = reserved + 1 WHERE event_id = ?");
         $stmt->execute([$eventId]);
 
@@ -99,4 +121,3 @@ if ($_SERVER['REQUEST_METHOD'] === "GET") { // Using GET method for reservation
     header("Location: ../pages/detailed_events.php?event_id=" . $eventId);
     exit();
 }
-?>

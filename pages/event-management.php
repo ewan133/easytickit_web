@@ -12,7 +12,7 @@ require_once '../includes/data_getter.inc.php';
     <title>Event Management</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons CDN -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
 
     <link rel="stylesheet" href="../css/styles.css">
 </head>
@@ -40,7 +40,7 @@ require_once '../includes/data_getter.inc.php';
                     <div class="collapse show" id="eventManagementCollapse">
                         <ul class="nav flex-column ms-3">
                             <li class="nav-item"><a href="event-management.php" class="nav-link active">Events</a></li>
-                            <li class="nav-item"><a href="ReservedUsers.php" class="nav-link">Reserved Users</a></li>
+                            <li class="nav-item"><a href="reserved_users.php" class="nav-link">Reserved Users</a></li>
                         </ul>
                     </div>
                 </li>
@@ -70,11 +70,21 @@ require_once '../includes/data_getter.inc.php';
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
 
+            <div class="d-flex justify-content-end gap-2 align-items-center">
+                <!-- Department Sorting Dropdown -->
+                <select id="departmentFilter" class="form-select w-auto py-2 mb-3">
+                    <option value="all">All Departments</option>
+                    <option value="CABA">CABA</option>
+                    <option value="CEIT">CEIT</option>
+                    <option value="CAS">CAS</option>
+                </select>
 
-            <div class="d-flex justify-content-end">
+                <!-- Add Event Button -->
                 <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#eventModal">+ Add
                     Event</button>
             </div>
+
+
 
             <table class="table table-striped">
                 <thead>
@@ -83,9 +93,11 @@ require_once '../includes/data_getter.inc.php';
                         <th>Department</th>
                         <th>Status</th>
                         <th>Price</th>
-                        <th>No. of Tickets</th>
+                        <th>Capacity</th>
+                        <th>Sold</th> <!-- Added Sold Column -->
+                        <th>Reserved</th> <!-- Added Reserved Column -->
                         <th>Date</th>
-                        <th>Actions</th> <!-- Added Actions Column -->
+                        <th>Actions</th>
                     </tr>
                 </thead>
 
@@ -101,6 +113,8 @@ require_once '../includes/data_getter.inc.php';
                     <td>{$event['status']}</td>
                     <td>₱ {$event['price']}</td>
                     <td>{$event['capacity']}</td>
+                    <td>{$event['sold']}</td> <!-- Sold Column -->
+                    <td>{$event['reserved']}</td> <!-- Reserved Column -->
                     <td>" . date("F j, Y h:i A", strtotime($event['start_datetime'])) . "</td>
                     <td>
                         <!-- Edit Button -->
@@ -118,11 +132,12 @@ require_once '../includes/data_getter.inc.php';
                 </tr>";
                         }
                     } else {
-                        echo "<tr><td colspan='7' class='text-center'>No events available</td></tr>";
+                        echo "<tr><td colspan='9' class='text-center'>No events available</td></tr>";
                     }
                     ?>
                 </tbody>
             </table>
+
 
 
 

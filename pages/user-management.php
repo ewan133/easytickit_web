@@ -29,17 +29,16 @@ require_once '../includes/data_getter.inc.php';
             <ul class="nav flex-column">
                 <li class="nav-item"><a href="dashboard.php" class="nav-link">Dashboard</a></li>
                 <li class="nav-item">
-                    <a class="nav-link" data-bs-toggle="collapse" href="#eventManagementCollapse" role="button">
-                        Event Management
-                    </a>
-                    <div class="collapse" id="eventManagementCollapse">
+                    <a class="nav-link" data-bs-toggle="collapse" href="#eventManagementCollapse" role="button">Event
+                        Management</a>
+                    <div class="collapse show" id="eventManagementCollapse">
                         <ul class="nav flex-column ms-3">
                             <li class="nav-item"><a href="event-management.php" class="nav-link">Events</a></li>
-                            <li class="nav-item"><a href="ReservedUsers.html" class="nav-link active">Reserved Users</a></li>
+                            <li class="nav-item"><a href="reserved_users.php" class="nav-link">Reserved Users</a></li>
                         </ul>
                     </div>
                 </li>
-                <li class="nav-item"><a href="user-management.php" class="nav-link">User Management</a></li>
+                <li class="nav-item"><a href="user-management.php" class="nav-link active">User Management</a></li>
             </ul>
         </div>
 
@@ -49,7 +48,8 @@ require_once '../includes/data_getter.inc.php';
 
             <!-- Search and Sort Controls -->
             <div class="d-flex justify-content-between mb-3">
-                <input type="text" id="searchUser" class="form-control w-50" placeholder="Search Users" onkeyup="searchUsers()">
+                <input type="text" id="searchUser" class="form-control w-50" placeholder="Search Users"
+                    onkeyup="searchUsers()">
                 <button class="btn btn-outline-secondary" id="sortButton" onclick="sortUsers()">Sort</button>
             </div>
 
@@ -113,8 +113,8 @@ require_once '../includes/data_getter.inc.php';
         function confirmDelete(userId) {
             if (confirm("Are you sure you want to delete this user?")) {
                 fetch(`../includes/delete_user.inc.php?user_id=${userId}`, {
-                        method: "GET"
-                    })
+                    method: "GET"
+                })
                     .then(response => response.text())
                     .then(result => {
                         if (result.includes("successfully")) {
@@ -144,7 +144,7 @@ require_once '../includes/data_getter.inc.php';
         }
 
         // Select All Checkbox Functionality
-        document.getElementById("selectAll").addEventListener("change", function() {
+        document.getElementById("selectAll").addEventListener("change", function () {
             let checkboxes = document.querySelectorAll(".user-checkbox");
             checkboxes.forEach(checkbox => checkbox.checked = this.checked);
         });

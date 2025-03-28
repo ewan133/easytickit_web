@@ -28,6 +28,8 @@ if (isset($_SESSION['user_id'])) {
     $_SESSION['reserved_events'] = getUserReservedEvents($pdo, $_SESSION['user_id']);
 }
 
+$reserved_users = getAllReservedUsersForActiveEvents($pdo);
+
 
 // Function to get all latest events
 function getAllLatestEvents($pdo)
@@ -41,7 +43,7 @@ function getAllLatestEvents($pdo)
 // Function to get all users
 function getAllUsers($pdo)
 {
-    $sql = "SELECT * FROM Users ORDER BY created_at DESC";
+    $sql = "SELECT * FROM Users WHERE role != 'admin' ORDER BY created_at DESC";
     $stmt = $pdo->prepare($sql);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -110,3 +112,21 @@ function getUserReservedEvents($pdo, $userId)
     $stmt->execute([$userId]);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+
+// Function to get all users who have reserved active events
+function getAllReservedUsersForActiveEvents($pdo)
+{
+    $sql = "SELECT u.user_id, u.name, u.email, u.phone_number, u.student_number, 
+                   e.event_id, e.title, e.start_datetime, e.price, e.status, 
+                   r.status as reservation_status, r.reserved_at
+            FROM Reservations r
+            INNER JOIN Users u ON r.user_id = u.user_id
+            INNER JOIN Events e ON r.event_id = e.event_id
+            WHERE e.status = 'active'
+            ORDER BY e.start_datetime DESC, r.reserved_at DESC";
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+

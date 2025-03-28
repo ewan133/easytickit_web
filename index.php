@@ -28,25 +28,75 @@ $events = $_SESSION['new_events'] ?? [];
 
 <body>
   <!-- NAVBAR -->
-  <nav class="navbar navbar-expand-lg navbar-dark">
-    <div class="container d-flex align-items-center">
-      <a class="navbar-brand" href="#"><img src="assets/logo.png" alt="Logo" /></a>
-      <input class="form-control search-bar" type="search" placeholder="Search an event..." aria-label="Search" />
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+  <nav class="navbar navbar-expand-lg shadow-sm" style="background-color: #004E51;">
+    <div class="container" style="max-width: 1200px;">
+
+      <!-- Logo -->
+      <a class="navbar-brand" href="#">
+        <img src="assets/logo.png" alt="Logo" width="55" height="55">
+      </a>
+
+      <!-- Toggle Button for Mobile -->
+      <button class="navbar-toggler border-0 text-white" type="button" data-bs-toggle="collapse"
+        data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link text-white" href="#">HOME</a></li>
-          <li class="nav-item"><a class="nav-link text-white" href="pages/events_page.php">EVENTS</a></li>
-          <li class="nav-item">
-            <a href="pages/account_page.php"><img src="<?= htmlspecialchars('uploads/' . $_SESSION['user_img']) ?>"
-                class="nav-profile" alt="Profile"></a>
+
+      <!-- Navigation Menu -->
+      <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
+
+        <!-- Search Bar (Hidden on Small Screens) -->
+        <div class="d-none d-lg-block flex-grow-1 mx-3">
+          <input class="form-control" type="search" placeholder="Search an event..." aria-label="Search">
+        </div>
+
+        <!-- Navigation Links -->
+        <ul class="navbar-nav ms-auto align-items-lg-center">
+          <li class="nav-item mx-2">
+            <a class="nav-link text-white" href="#">HOME</a>
+          </li>
+          <li class="nav-item mx-2">
+            <a class="nav-link text-white" href="pages/events_page.php">EVENTS</a>
+          </li>
+          <!-- Profile Section -->
+          <li class="nav-item ms-3 d-flex align-items-center">
+            <a href="pages/account_page.php" class="d-flex align-items-center text-decoration-none text-white">
+              <img src="<?= htmlspecialchars('uploads/' . $_SESSION['user_img']) ?>"
+                class="d-none d-lg-block rounded-circle border border-white shadow-sm me-2" alt="Profile" width="45"
+                height="45">
+              <span class="d-block d-lg-none fw-normal">PROFILE</span> <!-- Visible only on mobile -->
+            </a>
           </li>
         </ul>
+
+        <!-- Search Bar (Visible in Mobile View) -->
+        <div class="d-lg-none mt-3">
+          <input class="form-control" type="search" placeholder="Search an event..." aria-label="Search">
+        </div>
       </div>
     </div>
   </nav>
+
+  <!-- Fix Mobile Navbar Close Issue -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      var navLinks = document.querySelectorAll(".navbar-nav a");
+      var navBar = document.querySelector(".navbar-collapse");
+
+      navLinks.forEach(function (link) {
+        link.addEventListener("click", function () {
+          if (navBar.classList.contains("show")) {
+            new bootstrap.Collapse(navBar).toggle();
+          }
+        });
+      });
+    });
+  </script>
+
+
+
+
+
 
   <!-- BANNER -->
   <div class="container-fluid p-0">
@@ -79,7 +129,7 @@ $events = $_SESSION['new_events'] ?? [];
                 <h2 class="fw-bold"><?= htmlspecialchars($event['title']) ?></h2>
                 <p><?= htmlspecialchars($event['description']) ?></p>
                 <p><em>Date: <?= htmlspecialchars($event['start_datetime']) ?></em><br><strong>Price:
-                ₱<?= htmlspecialchars($event['price']) ?></strong></p>
+                    ₱<?= htmlspecialchars($event['price']) ?></strong></p>
                 <a href="pages/detailed_events.php?event_id=<?= $event['event_id'] ?>"
                   class="btn btn-warning text-white fw-bold">See More</a>
               </div>
@@ -115,6 +165,8 @@ $events = $_SESSION['new_events'] ?? [];
 
   <!-- SCRIPTS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.2/color-thief.umd.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", function () {

@@ -28,7 +28,7 @@
                 ?>
 
                 <div class="w-75">
-                    <form action="../includes/register.inc.php" method="POST" enctype="multipart/form-data"
+                    <form action="../includes/send_otp.php" method="POST" enctype="multipart/form-data"
                         onsubmit="return validateForm()">
 
                         <div class="text-center mb-3 d-none">
@@ -110,7 +110,8 @@
                         <div id="password_error" class="text-danger mb-2" style="display: none;">Passwords do not match!
                         </div>
 
-                        <button type="submit" class="btn btn-orange w-100 py-2">Continue</button>
+                        <button type="submit" name="send_otp" class="btn btn-orange w-100 py-2">Continue</button>
+
                     </form>
                 </div>
             </div>

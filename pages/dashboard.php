@@ -65,7 +65,7 @@ $departmentDataJSON = json_encode($_SESSION['users_by_department']);
                     <div class="collapse" id="eventManagementCollapse">
                         <ul class="nav flex-column ms-3">
                             <li class="nav-item"><a href="event-management.php" class="nav-link">Events</a></li>
-                            <li class="nav-item"><a href="ReservedUsers.html" class="nav-link">Reserved Users</a></li>
+                            <li class="nav-item"><a href="reserved_users.php" class="nav-link">Reserved Users</a></li>
                         </ul>
                     </div>
                 </li>

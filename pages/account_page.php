@@ -16,23 +16,56 @@ require_once '../includes/data_getter.inc.php';
 <body>
 
     <div class="wrapper d-flex flex-column min-vh-100">
-        <nav class="navbar navbar-expand-lg navbar-dark">
-            <div class="container d-flex align-items-center">
-                <a class="navbar-brand" href="#"><img src="../assets/logo.png" alt="Logo"></a>
-                <input class="form-control search-bar" type="search" placeholder="Search an event..."
-                    aria-label="Search">
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <!-- NAVBAR -->
+        <nav class="navbar navbar-expand-lg shadow-sm" style="background-color: #004E51;">
+            <div class="container" style="max-width: 1200px;">
+
+                <!-- Logo -->
+                <a class="navbar-brand" href="#">
+                    <img src="../assets/logo.png" alt="Logo" width="55" height="55">
+                </a>
+
+                <!-- Toggle Button for Mobile -->
+                <button class="navbar-toggler border-0 text-white" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNav">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item"><a class="nav-link text-white" href="../index.php">HOME</a></li>
-                        <li class="nav-item"><a class="nav-link text-white" href="events_page.php">EVENTS</a></li>
-                        <li class="nav-item">
-                            <a href="#"><img src="<?= htmlspecialchars('../uploads/' . $_SESSION['user_img']) ?>"
-                                    class="nav-profile" alt="Profile"></a>
+
+                <!-- Navigation Menu -->
+                <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
+
+                    <!-- Search Bar (Hidden on Small Screens) -->
+                    <div class="d-none d-lg-block flex-grow-1 mx-3">
+                        <form action="events_page.php" method="get">
+                            <input class="form-control" type="search" name="search" placeholder="Search an event..."
+                                aria-label="Search">
+                        </form>
+                    </div>
+
+                    <!-- Navigation Links -->
+                    <ul class="navbar-nav ms-auto align-items-lg-center">
+                        <li class="nav-item mx-2">
+                            <a class="nav-link text-white" href="../index.php">HOME</a>
+                        </li>
+                        <li class="nav-item mx-2">
+                            <a class="nav-link text-white" href="events_page.php">EVENTS</a>
+                        </li>
+                        <!-- Profile Section -->
+                        <li class="nav-item ms-3 d-flex align-items-center">
+                            <a href="account_page.php"
+                                class="d-flex align-items-center text-decoration-none text-white">
+                                <img src="<?= htmlspecialchars('../uploads/' . $_SESSION['user_img']) ?>"
+                                    class="d-none d-lg-block rounded-circle border border-white shadow-sm me-2"
+                                    alt="Profile" width="45" height="45">
+                                <span class="d-block d-lg-none fw-normal">PROFILE</span> <!-- Visible only on mobile -->
+                            </a>
                         </li>
                     </ul>
+
+                    <!-- Search Bar (Visible in Mobile View) -->
+                    <div class="d-lg-none mt-3">
+                        <input class="form-control" type="search" placeholder="Search an event..." aria-label="Search">
+                    </div>
                 </div>
             </div>
         </nav>
@@ -112,18 +145,58 @@ require_once '../includes/data_getter.inc.php';
             <div id="reservedEvents" class="event-list">
                 <?php if (isset($_SESSION['reserved_events']) && count($_SESSION['reserved_events']) > 0): ?>
                     <?php foreach ($_SESSION['reserved_events'] as $event): ?>
-                        <div>
-                            <a href="detailed_events.php?event_id=<?= $event['event_id'] ?>">
-                                <img src="<?= htmlspecialchars('../uploads/events/' . $event['image_1']) ?>" class="event-img"
-                                    alt="<?= htmlspecialchars($event['title']) ?>">
-                            </a>
+                        <div class="event-item" data-bs-toggle="modal" data-bs-target="#eventQRModal<?= $event['event_id'] ?>"
+                            style="cursor: pointer;">
+                            <img src="<?= htmlspecialchars('../uploads/events/' . $event['image_1']) ?>" class="event-img"
+                                alt="<?= htmlspecialchars($event['title']) ?>">
                             <p><?= htmlspecialchars($event['title']) ?></p>
                         </div>
+
+                        <!-- Event QR Code Modal -->
+                        <div class="modal fade" id="eventQRModal<?= $event['event_id'] ?>" tabindex="-1"
+                            aria-labelledby="eventQRModalLabel<?= $event['event_id'] ?>" aria-hidden="true">
+                            <div class="modal-dialog modal-md modal-dialog-centered"> <!-- Adjusted modal size to small -->
+                                <div class="modal-content"
+                                    style="background: #FFFFFF; box-shadow: 0px 4px 25.3px 23px rgba(0, 0, 0, 0.25); border-radius: 42px;">
+
+
+                                    <!-- Modal Body -->
+                                    <div class="modal-body text-center">
+                                        <h3 class="fw-bold text-primary mx-auto mb-0"
+                                            style="color: #017479; font-size: 2rem; padding-top: 10px; padding-bottom: 10px;">
+                                            Event QR
+                                        </h3>
+
+                                        <img src="<?= htmlspecialchars($event['qr_code']) ?>" alt="QR Code"
+                                            style="width:200px; height: 200px; border-radius: 10px; margin-bottom: 0px;">
+                                        <!-- Reduced image size -->
+                                        <h5 class="fw-bold" style="color: #3A3A3A; font-size: 1.50rem;">
+                                            <!-- Reduced font size -->
+                                            <?= htmlspecialchars($event['title']) ?>
+                                        </h5>
+                                        <p style="font-size: 1rem; color: #3A3A3A;"> <!-- Reduced font size -->
+                                            <?= date("F d, Y", strtotime($event['start_datetime'])) ?>
+                                        </p>
+                                        <div class="mt-3 mb-2"> <!-- Adjusted margin for button -->
+                                            <button class="btn btn-warning px-4"
+                                                style="background: #EF7125; color: #FFFFFF; border-radius: 10px; font-size: 1rem;"
+                                                data-bs-dismiss="modal">
+                                                Confirm
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
                     <?php endforeach; ?>
                 <?php else: ?>
                     <p class="text-center">No reserved events yet.</p>
                 <?php endif; ?>
             </div>
+
+
 
 
             <!-- Attended Events Section (Initially Hidden) -->

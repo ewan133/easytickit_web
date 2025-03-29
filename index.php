@@ -47,8 +47,12 @@ $events = $_SESSION['new_events'] ?? [];
 
         <!-- Search Bar (Hidden on Small Screens) -->
         <div class="d-none d-lg-block flex-grow-1 mx-3">
-          <input class="form-control" type="search" placeholder="Search an event..." aria-label="Search">
+          <form action="pages/events_page.php" method="get">
+            <input class="form-control" type="search" name="search" placeholder="Search an event..."
+              aria-label="Search">
+          </form>
         </div>
+
 
         <!-- Navigation Links -->
         <ul class="navbar-nav ms-auto align-items-lg-center">
@@ -166,8 +170,7 @@ $events = $_SESSION['new_events'] ?? [];
   <!-- SCRIPTS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.2/color-thief.umd.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       // ✅ Color Thief gradient logic

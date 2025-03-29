@@ -102,9 +102,11 @@ function getAllActiveEvents($pdo)
 // Function to get all the events that user reserved
 function getUserReservedEvents($pdo, $userId)
 {
-    $sql = "SELECT e.event_id, e.title, e.image_1, e.start_datetime, e.price, r.status 
+    $sql = "SELECT e.event_id, e.title, e.image_1, e.start_datetime, e.price, r.status AS reservation_status, 
+                   t.ticket_id, t.qr_code, t.status AS ticket_status 
             FROM Reservations r
             INNER JOIN Events e ON r.event_id = e.event_id
+            INNER JOIN Tickets t ON r.ticket_id = t.ticket_id
             WHERE r.user_id = ?
             ORDER BY r.reserved_at DESC";
     

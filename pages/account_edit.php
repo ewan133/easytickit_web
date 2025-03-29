@@ -16,23 +16,56 @@ require_once '../includes/data_getter.inc.php';
 <body>
 
     <div class="wrapper d-flex flex-column min-vh-100">
-        <nav class="navbar navbar-expand-lg navbar-dark">
-            <div class="container d-flex align-items-center">
-                <a class="navbar-brand" href="#"><img src="../assets/logo.png" alt="Logo"></a>
-                <input class="form-control search-bar" type="search" placeholder="Search an event..."
-                    aria-label="Search">
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <!-- NAVBAR -->
+        <nav class="navbar navbar-expand-lg shadow-sm" style="background-color: #004E51;">
+            <div class="container" style="max-width: 1200px;">
+
+                <!-- Logo -->
+                <a class="navbar-brand" href="#">
+                    <img src="../assets/logo.png" alt="Logo" width="55" height="55">
+                </a>
+
+                <!-- Toggle Button for Mobile -->
+                <button class="navbar-toggler border-0 text-white" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNav">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item"><a class="nav-link text-white" href="../index.php">HOME</a></li>
-                        <li class="nav-item"><a class="nav-link text-white" href="events_page.php">EVENTS</a></li>
-                        <li class="nav-item">
-                            <a href="account_page.php"><img src="<?= htmlspecialchars('../uploads/' . $_SESSION['user_img']) ?>"
-                                    class="nav-profile" alt="Profile"></a>
+
+                <!-- Navigation Menu -->
+                <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
+
+                    <!-- Search Bar (Hidden on Small Screens) -->
+                    <div class="d-none d-lg-block flex-grow-1 mx-3">
+                        <form action="events_page.php" method="get">
+                            <input class="form-control" type="search" name="search" placeholder="Search an event..."
+                                aria-label="Search">
+                        </form>
+                    </div>
+
+                    <!-- Navigation Links -->
+                    <ul class="navbar-nav ms-auto align-items-lg-center">
+                        <li class="nav-item mx-2">
+                            <a class="nav-link text-white" href="../index.php">HOME</a>
+                        </li>
+                        <li class="nav-item mx-2">
+                            <a class="nav-link text-white" href="events_page.php">EVENTS</a>
+                        </li>
+                        <!-- Profile Section -->
+                        <li class="nav-item ms-3 d-flex align-items-center">
+                            <a href="account_page.php"
+                                class="d-flex align-items-center text-decoration-none text-white">
+                                <img src="<?= htmlspecialchars('../uploads/' . $_SESSION['user_img']) ?>"
+                                    class="d-none d-lg-block rounded-circle border border-white shadow-sm me-2"
+                                    alt="Profile" width="45" height="45">
+                                <span class="d-block d-lg-none fw-normal">PROFILE</span> <!-- Visible only on mobile -->
+                            </a>
                         </li>
                     </ul>
+
+                    <!-- Search Bar (Visible in Mobile View) -->
+                    <div class="d-lg-none mt-3">
+                        <input class="form-control" type="search" placeholder="Search an event..." aria-label="Search">
+                    </div>
                 </div>
             </div>
         </nav>

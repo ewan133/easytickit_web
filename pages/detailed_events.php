@@ -75,7 +75,10 @@ if (isset($_SESSION['user_id'])) {
 
                 <!-- Search Bar (Hidden on Small Screens) -->
                 <div class="d-none d-lg-block flex-grow-1 mx-3">
-                    <input class="form-control" type="search" placeholder="Search an event..." aria-label="Search">
+                    <form action="events_page.php" method="get">
+                        <input class="form-control" type="search" name="search" placeholder="Search an event..."
+                            aria-label="Search">
+                    </form>
                 </div>
 
                 <!-- Navigation Links -->
@@ -105,7 +108,7 @@ if (isset($_SESSION['user_id'])) {
         </div>
     </nav>
 
-    <div class="container">
+    <div class="container" style="min-height: 100vh;">
         <div class="container mt-5 mb-4"> <!-- Reduced top margin -->
             <div class="row align-items-start g-4 justify-content-center" style="max-width: 1200px; margin: auto;">
 
@@ -133,13 +136,12 @@ if (isset($_SESSION['user_id'])) {
                                 <strong>Date:</strong>
                                 <?= date("F d, Y", strtotime($selected_event['start_datetime'])) ?>
                             </p>
-                        </div>
-                        <div class="col-md-6 text-md-end text-center">
                             <p class="fs-5 text-dark">
                                 <strong>Price:</strong> ₱<?= number_format($selected_event['price'], 2) ?>
                             </p>
                         </div>
                     </div>
+
                 </div>
 
             </div>
@@ -311,10 +313,14 @@ if (isset($_SESSION['user_id'])) {
                         style="font-size: 16px; text-decoration: underline;">
                         Back
                     </button>
-                    <a href="#" id="confirmButton" class="btn fw-bold px-4"
-                        style="background: #EF7125; color: #FFFFFF; font-size: 16px; border-radius: 8px;">
-                        Confirm
-                    </a>
+                    <form action="../includes/reserve_event.inc.php" method="get" id="reserveForm">
+                        <input type="hidden" name="event_id" value="<?= $event_id ?>" />
+                        <input type="hidden" name="payment_method" id="paymentMethodInput" />
+                        <button type="submit" class="btn fw-bold px-4"
+                            style="background: #EF7125; color: #FFFFFF; font-size: 16px; border-radius: 8px;">
+                            Confirm
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -328,21 +334,20 @@ if (isset($_SESSION['user_id'])) {
                     event.preventDefault();
                     document.getElementById("selectedPayment").innerText = this.getAttribute("data-value");
                     document.getElementById("paymentError").classList.add("d-none"); // Hide error message
+                    document.getElementById("paymentMethodInput").value = this.getAttribute("data-value"); // Set the selected payment method
                 });
             });
 
-            document.getElementById("confirmButton").addEventListener("click", function (event) {
+            document.getElementById("reserveForm").addEventListener("submit", function (event) {
                 let selectedPayment = document.getElementById("selectedPayment").innerText;
                 if (selectedPayment === "Select Payment Method") {
-                    event.preventDefault(); // Prevent navigation if no selection
+                    event.preventDefault(); // Prevent form submission if no selection
                     document.getElementById("paymentError").classList.remove("d-none"); // Show error message
-                } else {
-                    // Proceed to reservation with selected payment method
-                    window.location.href = `../includes/reserve_event.inc.php?event_id=<?= $event_id ?>&payment_method=${selectedPayment}`;
                 }
             });
         });
     </script>
+
 
     <!-- Unreserve Confirmation Modal -->
     <div class="modal fade" id="unreserveModal" tabindex="-1" aria-labelledby="unreserveModalLabel" aria-hidden="true">
